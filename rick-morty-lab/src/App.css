@@ -1,0 +1,513 @@
+/* src/App.css - Rick and Morty Lab: Retro Arcade Edition
+   Paleta, fuentes y efectos basados en la guía Arcade Multiverse (Retro Cabinet) */
+
+:root {
+  /* Fuentes */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-hud: 'Share Tech Mono', monospace;
+  --font-main: 'Space Grotesk', sans-serif;
+
+  /* Colores */
+  --bg-dark: #0b0e14;
+  --bg-surface: #10131a;
+  --bg-card: #151821;
+  --bg-card-hover: #1b202c;
+  --portal-green: #39ff14;
+  --portal-green-dark: #15803d;
+  --arcade-cyan: #00f0ff;
+  --arcade-yellow: #facc15;
+  --boss-red: #ef4444;
+  --health-green: #22c55e;
+  --border-cabinet: #1f2430;
+  --border-subtle: #1e293b;
+  --border-gold: #eab308;
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-terminal: #39ff14;
+  --text-dim: #475569;
+
+  /* Resplandores Arcade (Glow FX) */
+  --glow-green: 0 0 10px rgba(57, 255, 20, 0.4), 0 0 20px rgba(57, 255, 20, 0.2);
+  --glow-cyan: 0 0 10px rgba(0, 240, 255, 0.4);
+  --glow-yellow: 0 0 12px rgba(250, 204, 21, 0.35);
+  --glow-red: 0 0 12px rgba(239, 68, 68, 0.45);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  background-image:
+    radial-gradient(ellipse at top, rgba(57, 255, 20, 0.05), transparent 70%),
+    linear-gradient(rgba(11, 14, 20, 0.95), rgba(11, 14, 20, 0.95));
+  background-attachment: fixed;
+}
+
+/* Efecto CRT: líneas de escaneo */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.18) 0px,
+    rgba(0, 0, 0, 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* ===== Header: cabina de arcade ===== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2.5rem;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-cabinet);
+}
+
+.logo-container img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--portal-green);
+  box-shadow: var(--glow-green);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-family: var(--font-hud);
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+nav a:hover {
+  color: var(--portal-green);
+  text-shadow: var(--glow-green);
+}
+
+.coin-badge {
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+  color: var(--arcade-yellow);
+  border: 2px solid var(--arcade-yellow);
+  padding: 0.45rem 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--glow-yellow);
+  animation: blink 1.2s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ===== Título héroe arcade ===== */
+.hero-section {
+  text-align: center;
+  padding: 3.5rem 1rem 2rem;
+}
+
+.hero-section h1 {
+  font-family: var(--font-pixel);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 4.5vw, 2.2rem);
+  color: var(--portal-green);
+  text-shadow:
+    3px 3px 0 var(--border-cabinet),
+    0 0 10px rgba(57, 255, 20, 0.6),
+    0 0 25px rgba(57, 255, 20, 0.35);
+  margin: 0;
+}
+
+/* ===== Buscador estilo terminal ===== */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0 0;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 440px;
+  padding: 0.8rem 1rem;
+  background-color: #0f131a;
+  border: 2px solid var(--border-cabinet);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-family: var(--font-hud);
+  font-size: 1.05rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input::placeholder {
+  color: var(--text-dim);
+}
+
+.search-input:focus {
+  border-color: var(--portal-green);
+  box-shadow: var(--glow-green);
+}
+
+/* ===== Contenedor principal ===== */
+.main-content {
+  background-color: var(--bg-dark);
+  padding: 3rem 2rem;
+  min-height: 100vh;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 1.25rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* ===== Fighter Card (tarjeta de luchador) ===== */
+.rick-card {
+  display: flex;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-cabinet);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.rick-card:hover {
+  border-color: var(--portal-green);
+  background-color: var(--bg-card-hover);
+  box-shadow: var(--glow-green);
+}
+
+.rick-card:focus-visible {
+  outline: 3px solid var(--arcade-cyan);
+  outline-offset: 2px;
+}
+
+.card-image {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-right: 2px solid var(--border-cabinet);
+}
+
+.card-content {
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.6rem;
+  flex: 1;
+  min-width: 0;
+  color: var(--text-primary);
+}
+
+.fighter-header {
+  font-family: var(--font-hud);
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.fighter-code {
+  color: var(--portal-green);
+  text-shadow: var(--glow-green);
+  text-transform: uppercase;
+}
+
+.fighter-hp {
+  color: var(--arcade-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.card-content h3 {
+  font-family: var(--font-pixel);
+  font-weight: 400;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+  margin: 0;
+}
+
+.card-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px currentColor;
+  flex-shrink: 0;
+}
+
+/* Barra de vida por segmentos */
+.health-bar-container {
+  display: flex;
+  gap: 4px;
+  background: #0f131a;
+  padding: 4px;
+  border: 1px solid var(--border-subtle);
+}
+
+.hp-segment {
+  height: 8px;
+  flex: 1;
+  background: var(--border-subtle);
+}
+
+.hp-segment.active {
+  background: var(--portal-green);
+  box-shadow: 0 0 6px var(--portal-green);
+}
+
+.card-section-title {
+  color: var(--text-muted);
+  font-family: var(--font-hud);
+  font-size: 0.8rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-section-value {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ===== Paginación arcade ===== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+.pagination span {
+  font-family: var(--font-hud);
+  font-size: 1rem;
+  color: var(--arcade-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.portal-btn {
+  background: var(--portal-green);
+  color: var(--bg-dark);
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--portal-green);
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: var(--glow-green);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.portal-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+  box-shadow: 0 0 18px rgba(57, 255, 20, 0.7);
+}
+
+.portal-btn:disabled {
+  background: var(--border-cabinet);
+  border-color: var(--border-cabinet);
+  color: var(--text-dim);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* ===== Loader ===== */
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  min-height: 50vh;
+}
+
+.loader-container p {
+  font-family: var(--font-hud);
+  font-size: 1rem;
+  color: var(--text-terminal);
+  text-shadow: var(--glow-green);
+}
+
+.portal-spinner {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 6px solid rgba(57, 255, 20, 0.15);
+  border-top-color: var(--portal-green);
+  box-shadow: 0 0 16px rgba(57, 255, 20, 0.4);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== Error: Boss Stage ===== */
+.error-message {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  background-color: var(--bg-card);
+  border: 2px solid var(--boss-red);
+  border-radius: 4px;
+  color: var(--boss-red);
+  font-family: var(--font-hud);
+  font-size: 1rem;
+  text-shadow: var(--glow-red);
+}
+
+/* ===== Modal: cabina arcade ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(4, 6, 10, 0.85);
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  position: relative;
+  width: min(430px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center;
+  background-color: var(--bg-surface);
+  border: 2px solid var(--portal-green);
+  border-radius: 4px;
+  padding: 2rem;
+  color: var(--text-primary);
+  box-shadow: var(--glow-green), 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  font-size: 1.4rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+.close-btn:hover {
+  color: var(--boss-red);
+  text-shadow: var(--glow-red);
+}
+
+.modal-image {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--portal-green);
+  box-shadow: var(--glow-green);
+  margin-bottom: 1rem;
+}
+
+.modal-content h2 {
+  font-family: var(--font-pixel);
+  font-weight: 400;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  color: var(--portal-green);
+  text-shadow: var(--glow-green);
+}
+
+.modal-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+.modal-details p {
+  margin: 0;
+  font-family: var(--font-hud);
+  font-size: 1rem;
+  color: var(--text-primary);
+  border-left: 3px solid var(--arcade-cyan);
+  padding-left: 0.5rem;
+}
+
+.modal-details strong {
+  color: var(--portal-green);
+  text-shadow: var(--glow-green);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 700px) {
+  .app-header {
+    padding: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  nav {
+    gap: 1rem;
+  }
+
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .card-image {
+    width: 130px;
+    height: 130px;
+  }
+
+  .card-content h3 {
+    font-size: 0.65rem;
+  }
+
+  .hero-section h1 {
+    font-size: 1.25rem;
+  }
+}
