@@ -37,11 +37,13 @@ rick-morty-lab/
 │   ├── pages/
 │   │   └── Home.jsx            # Orquestador: useState/useEffect, fetch y render condicional
 │   ├── components/
-│   │   ├── Card.jsx            # Tarjeta individual (imagen, nombre, estado/especie)
+│   │   ├── Card.jsx            # Tarjeta individual (imagen, nombre, estado/especie, favorito)
 │   │   ├── CardList.jsx        # Grid de tarjetas + paginación (info.prev/info.next)
 │   │   ├── SearchBar.jsx       # Input controlado para filtrado en tiempo real
 │   │   ├── Loader.jsx          # Loader con spinner de portal
-│   │   └── DetailModal.jsx     # Modal de detalle del personaje
+│   │   ├── DetailModal.jsx     # Modal de detalle del personaje
+│   │   ├── FilterBar.jsx       # Tabs Todos/Favoritos + filtros por estado y especie
+│   │   └── ThemeToggle.jsx     # Botón de alternancia entre tema oscuro y claro
 │   └── services/
 │       └── api.js              # Capa centralizada de peticiones HTTP (fetch)
 └── public/
@@ -57,8 +59,12 @@ rick-morty-lab/
 
 - **Listado de personajes:** Grid responsive de tarjetas con imagen, nombre y dato distintivo (estado codificado por color + especie).
 - **Buscador en tiempo real:** Filtra por nombre contra la API con *debounce* de 300 ms y reinicia a la página 1 al buscar.
+- **Filtros adicionales:** Selects de estado (`alive`, `dead`, `unknown`) y especie (`human`, `alien`) que se combinan en tiempo real con la búsqueda en la API.
 - **Paginación:** Navegación Anterior/Siguiente usando `info.prev` y `info.next`; los botones se deshabilitan en los extremos.
+- **Favoritos:** Sistema con `useState` sincronizado con `localStorage`: se marcan/desmarcan personajes desde las tarjetas (botón corazón) y se alterna la vista entre **Todos** y **Favoritos**.
 - **Modal de detalle:** Al hacer clic en una tarjeta se abre el detalle completo (estado, especie, género, origen, ubicación). Cierra con el botón ✕, al hacer clic fuera o con la tecla `Esc`.
+- **Animaciones y transiciones:** `fadeIn` del overlay y `scaleUp` del modal, entrada animada de las tarjetas y transiciones suaves de color al cambiar de tema.
+- **Modo Oscuro / Claro:** Botón en el header que alterna entre la estética arcade oscura y el tema claro profesional (persistido en `localStorage`).
 - **Estados de carga y error:** Loader animado mientras se peticiona y mensaje de error controlado si la petición falla (404 sin resultados u otros errores HTTP).
 
 ## Comandos

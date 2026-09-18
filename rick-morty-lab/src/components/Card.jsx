@@ -1,5 +1,5 @@
 // src/components/Card.jsx
-export const Card = ({ character, playerIndex, onClick }) => {
+export const Card = ({ character, playerIndex, onClick, isFavorite, onToggleFavorite }) => {
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case "alive": return "#22c55e";
@@ -34,7 +34,22 @@ export const Card = ({ character, playerIndex, onClick }) => {
       onClick={() => onClick(character)}
       onKeyDown={handleKeyDown}
     >
-      <img src={character.image} alt={character.name} className="card-image" />
+      <div className="card-image-frame">
+        <img src={character.image} alt={character.name} className="card-image" />
+        <button
+          type="button"
+          className={`heart-btn${isFavorite ? " favorite" : ""}`}
+          aria-label={isFavorite ? "Quitar de favoritos" : "Agregar a favoritos"}
+          aria-pressed={isFavorite}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(character);
+          }}
+          onKeyDown={(e) => e.stopPropagation()}
+        >
+          ♥
+        </button>
+      </div>
 
       <div className="card-content">
         <div className="fighter-header">
