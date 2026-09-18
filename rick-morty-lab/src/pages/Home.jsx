@@ -70,6 +70,7 @@ export const Home = () => {
         </div>
         <nav>
           <a href="#characters">Characters</a>
+          <span className="coin-badge">Insert Coin</span>
         </nav>
       </header>
 

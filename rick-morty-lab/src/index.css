@@ -1,4 +1,4 @@
-/* src/index.css - Reset global del tema claro (diseño oficial Rick and Morty API) */
+/* src/index.css - Reset global del tema Retro Arcade */
 
 * {
   box-sizing: border-box;
@@ -9,12 +9,6 @@
 html,
 body {
   min-height: 100vh;
-}
-
-body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #ffffff;
-  color: #333;
 }
 
 #root {

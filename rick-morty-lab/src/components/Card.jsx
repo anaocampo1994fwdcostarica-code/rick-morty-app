@@ -1,10 +1,18 @@
 // src/components/Card.jsx
-export const Card = ({ character, onClick }) => {
+export const Card = ({ character, playerIndex, onClick }) => {
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case "alive": return "#55cc44";
-      case "dead": return "#ff5555";
-      default: return "#9e9e9e";
+      case "alive": return "#22c55e";
+      case "dead": return "#ef4444";
+      default: return "#94a3b8";
+    }
+  };
+
+  const getHp = (status) => {
+    switch (status.toLowerCase()) {
+      case "alive": return 5;
+      case "dead": return 1;
+      default: return 3;
     }
   };
 
@@ -15,6 +23,9 @@ export const Card = ({ character, onClick }) => {
     }
   };
 
+  const playerId = `P${String(playerIndex + 1).padStart(2, "0")}`;
+  const hp = getHp(character.status);
+
   return (
     <div
       className="rick-card"
@@ -24,8 +35,15 @@ export const Card = ({ character, onClick }) => {
       onKeyDown={handleKeyDown}
     >
       <img src={character.image} alt={character.name} className="card-image" />
+
       <div className="card-content">
+        <div className="fighter-header">
+          <span className="fighter-code">{playerId}</span>
+          <span className="fighter-hp">HP {hp}/5</span>
+        </div>
+
         <h3>{character.name}</h3>
+
         <p className="card-info">
           <span
             className="status-dot"
@@ -33,6 +51,13 @@ export const Card = ({ character, onClick }) => {
           />
           {character.status} - {character.species}
         </p>
+
+        <div className="health-bar-container">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className={`hp-segment${i < hp ? " active" : ""}`} />
+          ))}
+        </div>
+
         <p className="card-section-title">Last known location</p>
         <p className="card-section-value">{character.location.name}</p>
       </div>

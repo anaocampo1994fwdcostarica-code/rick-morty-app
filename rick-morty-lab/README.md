@@ -14,7 +14,7 @@ Cumplir con los cuatro criterios de evaluación:
    components/ → pages/ → App.jsx → main.jsx → index.html
    ```
 
-4. **Coherencia estética:** Identidad visual de Rick and Morty inspirada en el sitio oficial de la API, con tipografía pixel retro (`Press Start 2P`), verdes ácidos neón, tarjetas estilizadas, buscador con glow, loader de portal y modal de detalle.
+4. **Coherencia estética:** Estética *Retro Arcade Cabinet* inspirada en la máquina arcade y la web oficial de la API: paleta oscura de cabina (`#0b0e14`) con acentos neón —verde portal `#39ff14`, cian `#00f0ff`, amarillo moneda `#facc15`—, tipografías pixel/HUD/legible (`Press Start 2P`, `Share Tech Mono`, `Space Grotesk`), efecto CRT con líneas de escaneo, tarjetas estilo *fighter* con barra de HP, buscador con glow, loader de portal y modal arcade.
 
 ## Stack
 

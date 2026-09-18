@@ -5,8 +5,8 @@ export const CardList = ({ characters, onCardClick, page, setPage, info }) => {
   return (
     <>
       <div className="grid-container" id="characters">
-        {characters.map((char) => (
-          <Card key={char.id} character={char} onClick={onCardClick} />
+        {characters.map((char, index) => (
+          <Card key={char.id} character={char} playerIndex={index} onClick={onCardClick} />
         ))}
       </div>
 
