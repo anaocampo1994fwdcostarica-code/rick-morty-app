@@ -1,32 +1,50 @@
 // src/components/CardList.jsx
 import { Card } from "./Card";
 
-export const CardList = ({ characters, onCardClick, page, setPage, info }) => {
+export const CardList = ({
+  characters,
+  onCardClick,
+  page,
+  setPage,
+  info,
+  hidePagination,
+  isFavorite,
+  onToggleFavorite,
+}) => {
   return (
     <>
       <div className="grid-container" id="characters">
         {characters.map((char, index) => (
-          <Card key={char.id} character={char} playerIndex={index} onClick={onCardClick} />
+          <Card
+            key={char.id}
+            character={char}
+            playerIndex={index}
+            onClick={onCardClick}
+            isFavorite={isFavorite(char.id)}
+            onToggleFavorite={onToggleFavorite}
+          />
         ))}
       </div>
 
-      <div className="pagination">
-        <button 
-          onClick={() => setPage(page - 1)} 
-          disabled={!info.prev}
-          className="portal-btn"
-        >
-          Anterior
-        </button>
-        <span>Página {page}</span>
-        <button 
-          onClick={() => setPage(page + 1)} 
-          disabled={!info.next}
-          className="portal-btn"
-        >
-          Siguiente
-        </button>
-      </div>
+      {!hidePagination && (
+        <div className="pagination">
+          <button
+            onClick={() => setPage(page - 1)}
+            disabled={!info.prev}
+            className="portal-btn"
+          >
+            Anterior
+          </button>
+          <span>Página {page}</span>
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={!info.next}
+            className="portal-btn"
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
     </>
   );
 };

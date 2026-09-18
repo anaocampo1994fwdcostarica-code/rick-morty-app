@@ -1,5 +1,5 @@
 /* src/App.css - Rick and Morty Lab: Retro Arcade Edition
-   Paleta, fuentes y efectos basados en la guía Arcade Multiverse (Retro Cabinet) */
+   Paleta, fuentes y efectos arcade + tema claro vía [data-theme="light"] */
 
 :root {
   /* Fuentes */
@@ -7,7 +7,7 @@
   --font-hud: 'Share Tech Mono', monospace;
   --font-main: 'Space Grotesk', sans-serif;
 
-  /* Colores */
+  /* Colores (tema oscuro Arcade Cabinet) */
   --bg-dark: #0b0e14;
   --bg-surface: #10131a;
   --bg-card: #151821;
@@ -25,12 +25,41 @@
   --text-muted: #94a3b8;
   --text-terminal: #39ff14;
   --text-dim: #475569;
+  --input-bg: #0f131a;
+  --health-bg: #0f131a;
 
   /* Resplandores Arcade (Glow FX) */
   --glow-green: 0 0 10px rgba(57, 255, 20, 0.4), 0 0 20px rgba(57, 255, 20, 0.2);
   --glow-cyan: 0 0 10px rgba(0, 240, 255, 0.4);
   --glow-yellow: 0 0 12px rgba(250, 204, 21, 0.35);
   --glow-red: 0 0 12px rgba(239, 68, 68, 0.45);
+}
+
+/* ===== Tema claro (estética profesional de la web oficial) ===== */
+[data-theme="light"] {
+  --bg-dark: #f2f4f7;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f0f3f7;
+  --portal-green: #19a64a;
+  --portal-green-dark: #15803d;
+  --arcade-cyan: #0b8fa8;
+  --arcade-yellow: #c78a05;
+  --boss-red: #dc2626;
+  --health-green: #22c55e;
+  --border-cabinet: #d7dce3;
+  --border-subtle: #e2e8f0;
+  --border-gold: #c78a05;
+  --text-primary: #202329;
+  --text-muted: #5b6472;
+  --text-terminal: #19a64a;
+  --text-dim: #94a3b8;
+  --input-bg: #ffffff;
+  --health-bg: #eef2f7;
+  --glow-green: 0 0 8px rgba(25, 166, 74, 0.35), 0 0 16px rgba(25, 166, 74, 0.15);
+  --glow-cyan: 0 0 8px rgba(11, 143, 168, 0.35);
+  --glow-yellow: 0 0 8px rgba(199, 138, 5, 0.35);
+  --glow-red: 0 0 8px rgba(220, 38, 38, 0.4);
 }
 
 body {
@@ -42,9 +71,10 @@ body {
     radial-gradient(ellipse at top, rgba(57, 255, 20, 0.05), transparent 70%),
     linear-gradient(rgba(11, 14, 20, 0.95), rgba(11, 14, 20, 0.95));
   background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Efecto CRT: líneas de escaneo */
+/* Efecto CRT: líneas de escaneo (solo tema oscuro) */
 body::after {
   content: "";
   position: fixed;
@@ -60,6 +90,37 @@ body::after {
   );
 }
 
+[data-theme="light"] body {
+  background-image:
+    radial-gradient(ellipse at top, rgba(25, 166, 74, 0.06), transparent 70%),
+    linear-gradient(#ffffff, #f2f4f7);
+}
+
+[data-theme="light"] body::after {
+  background: none;
+}
+
+/* ===== Animaciones globales ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* ===== Header: cabina de arcade ===== */
 .app-header {
   display: flex;
@@ -68,6 +129,7 @@ body::after {
   padding: 1.25rem 2.5rem;
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-cabinet);
+  transition: background-color 0.3s ease;
 }
 
 .logo-container img {
@@ -82,6 +144,8 @@ nav {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 nav a {
@@ -117,6 +181,26 @@ nav a:hover {
   }
 }
 
+.theme-toggle {
+  font-family: var(--font-hud);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--arcade-cyan);
+  background: transparent;
+  border: 2px solid var(--arcade-cyan);
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-toggle:hover {
+  box-shadow: var(--glow-cyan);
+  color: var(--portal-green);
+  border-color: var(--portal-green);
+}
+
 /* ===== Título héroe arcade ===== */
 .hero-section {
   text-align: center;
@@ -135,6 +219,96 @@ nav a:hover {
   margin: 0;
 }
 
+[data-theme="light"] .hero-section h1 {
+  text-shadow:
+    3px 3px 0 #d7dce3,
+    0 0 10px rgba(25, 166, 74, 0.45),
+    0 0 22px rgba(25, 166, 74, 0.2);
+}
+
+/* ===== Controles: tabs de vista y filtros ===== */
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.view-tabs {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.tab-btn {
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  background: transparent;
+  border: 2px solid var(--border-cabinet);
+  border-radius: 2px;
+  padding: 0.6rem 0.9rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.tab-btn:hover {
+  color: var(--portal-green);
+  border-color: var(--portal-green);
+  text-shadow: var(--glow-green);
+}
+
+.tab-btn.active {
+  background: var(--portal-green);
+  border-color: var(--portal-green);
+  color: var(--bg-dark);
+  box-shadow: var(--glow-green);
+  text-shadow: none;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.filter-label {
+  font-family: var(--font-hud);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.filter-select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 2px solid var(--border-cabinet);
+  border-radius: 4px;
+  font-family: var(--font-hud);
+  font-size: 1rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filter-select:focus {
+  border-color: var(--portal-green);
+  box-shadow: var(--glow-green);
+}
+
 /* ===== Buscador estilo terminal ===== */
 .search-container {
   display: flex;
@@ -146,7 +320,7 @@ nav a:hover {
   width: 100%;
   max-width: 440px;
   padding: 0.8rem 1rem;
-  background-color: #0f131a;
+  background-color: var(--input-bg);
   border: 2px solid var(--border-cabinet);
   border-radius: 4px;
   color: var(--text-primary);
@@ -170,6 +344,7 @@ nav a:hover {
   background-color: var(--bg-dark);
   padding: 3rem 2rem;
   min-height: 100vh;
+  transition: background-color 0.3s ease;
 }
 
 .grid-container {
@@ -186,7 +361,8 @@ nav a:hover {
   background-color: var(--bg-card);
   border: 2px solid var(--border-cabinet);
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  animation: fadeIn 0.3s ease-out;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease;
 }
 
 .rick-card:hover {
@@ -200,12 +376,51 @@ nav a:hover {
   outline-offset: 2px;
 }
 
-.card-image {
+.card-image-frame {
+  position: relative;
+  flex-shrink: 0;
   width: 200px;
   height: 200px;
-  object-fit: cover;
-  flex-shrink: 0;
   border-right: 2px solid var(--border-cabinet);
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.heart-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--text-muted);
+  background: rgba(11, 14, 20, 0.65);
+  border: 2px solid var(--border-cabinet);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.heart-btn:hover {
+  transform: scale(1.1);
+  color: var(--boss-red);
+  border-color: var(--boss-red);
+}
+
+.heart-btn.favorite {
+  color: var(--boss-red);
+  border-color: var(--boss-red);
+  box-shadow: var(--glow-red);
 }
 
 .card-content {
@@ -269,7 +484,7 @@ nav a:hover {
 .health-bar-container {
   display: flex;
   gap: 4px;
-  background: #0f131a;
+  background: var(--health-bg);
   padding: 4px;
   border: 1px solid var(--border-subtle);
 }
@@ -335,7 +550,7 @@ nav a:hover {
 .portal-btn:hover:not(:disabled) {
   transform: translateY(-2px);
   filter: brightness(1.15);
-  box-shadow: 0 0 18px rgba(57, 255, 20, 0.7);
+  box-shadow: 0 0 18px var(--portal-green);
 }
 
 .portal-btn:disabled {
@@ -394,6 +609,20 @@ nav a:hover {
   text-shadow: var(--glow-red);
 }
 
+/* ===== Estado vacío (sin favoritos) ===== */
+.empty-state {
+  max-width: 600px;
+  margin: 4rem auto;
+  text-align: center;
+  font-family: var(--font-hud);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  border: 2px dashed var(--border-cabinet);
+  border-radius: 4px;
+  padding: 2.5rem 1.5rem;
+}
+
 /* ===== Modal: cabina arcade ===== */
 .modal-overlay {
   position: fixed;
@@ -405,6 +634,7 @@ nav a:hover {
   padding: 1rem;
   background: rgba(4, 6, 10, 0.85);
   backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-out;
 }
 
 .modal-content {
@@ -419,6 +649,7 @@ nav a:hover {
   padding: 2rem;
   color: var(--text-primary);
   box-shadow: var(--glow-green), 0 10px 40px rgba(0, 0, 0, 0.6);
+  animation: scaleUp 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
 .close-btn {
@@ -498,7 +729,7 @@ nav a:hover {
     grid-template-columns: 1fr;
   }
 
-  .card-image {
+  .card-image-frame {
     width: 130px;
     height: 130px;
   }
